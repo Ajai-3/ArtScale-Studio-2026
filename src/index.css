@@ -1,14 +1,14 @@
-@import "tw-animate-css";
-@import "@fontsource-variable/figtree";
+@import 'tw-animate-css';
+@import '@fontsource-variable/figtree';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "shadcn/tailwind.css";
+@import 'shadcn/tailwind.css';
 
 @layer base {
   .theme {
     --font-heading: var(--font-sans);
-    --font-sans: 'Figtree Variable', sans-serif
+    --font-sans: 'Figtree Variable', sans-serif;
   }
   :root {
     --background: oklch(1 0 0);
@@ -42,7 +42,7 @@
     --sidebar-accent: oklch(0.97 0 0);
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0)
+    --sidebar-ring: oklch(0.708 0 0);
   }
   .dark {
     --background: oklch(0.145 0 0);
@@ -75,7 +75,7 @@
     --sidebar-accent: oklch(0.269 0 0);
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0)
+    --sidebar-ring: oklch(0.556 0 0);
   }
   * {
     border-color: var(--border);
@@ -88,5 +88,43 @@
   }
   html {
     font-family: var(--font-sans);
+  }
+}
+
+/* Custom scrollbar styling */
+@layer components {
+  /* Global scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1e293b;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-color: #475569 #1e293b;
+    scrollbar-width: thin;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
   }
 }

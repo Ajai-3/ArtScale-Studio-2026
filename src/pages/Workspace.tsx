@@ -35,6 +35,7 @@ const Workspace = () => {
   const [ppi, setPpi] = useState(96);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [isLocked, setIsLocked] = useState(false);
+  const [showRuler, setShowRuler] = useState(true);
 
   useEffect(() => {
     if (id) loadProject();
@@ -210,6 +211,87 @@ const Workspace = () => {
     return nums;
   };
 
+  const renderRuler = () => {
+    const rulers = [];
+    const tickInterval = pixelsPerCm; // 1 cm
+
+    // Horizontal ruler marks (for top ruler, 40px height)
+    for (let i = 0; i <= width; i += tickInterval) {
+      const isMajor = Math.round((i / tickInterval) % 5) === 0;
+      const tickHeight = isMajor ? 12 : 6;
+
+      rulers.push(
+        <line
+          key={`h-ruler-tick-${i}`}
+          x1={i}
+          y1={40 - tickHeight}
+          x2={i}
+          y2={40}
+          stroke="#ffff00"
+          strokeWidth="1"
+          opacity="0.7"
+        />,
+      );
+
+      if (isMajor && i % (tickInterval * 5) === 0) {
+        const cmValue = Math.round(i / pixelsPerCm);
+        rulers.push(
+          <text
+            key={`h-ruler-label-${i}`}
+            x={i - 6}
+            y={18}
+            fontSize="9"
+            fill="#ffff00"
+            fontFamily="monospace"
+            fontWeight="bold"
+            opacity="0.8"
+          >
+            {cmValue}
+          </text>,
+        );
+      }
+    }
+
+    // Vertical ruler marks (for left ruler, 40px width)
+    for (let i = 0; i <= height; i += tickInterval) {
+      const isMajor = Math.round((i / tickInterval) % 5) === 0;
+      const tickWidth = isMajor ? 12 : 6;
+
+      rulers.push(
+        <line
+          key={`v-ruler-tick-${i}`}
+          x1={40 - tickWidth}
+          y1={i}
+          x2={40}
+          y2={i}
+          stroke="#ffff00"
+          strokeWidth="1"
+          opacity="0.7"
+        />,
+      );
+
+      if (isMajor && i % (tickInterval * 5) === 0) {
+        const cmValue = Math.round(i / pixelsPerCm);
+        rulers.push(
+          <text
+            key={`v-ruler-label-${i}`}
+            x={6}
+            y={i + 4}
+            fontSize="9"
+            fill="#ffff00"
+            fontFamily="monospace"
+            fontWeight="bold"
+            opacity="0.8"
+          >
+            {cmValue}
+          </text>,
+        );
+      }
+    }
+
+    return rulers;
+  };
+
   const handleDownload = () => {
     if (!project) return;
     const canvas = document.createElement('canvas');
@@ -375,37 +457,79 @@ const Workspace = () => {
           </div>
         </header>
 
-        <div className="flex-1 overflow-auto bg-dark-800 p-4 flex items-center justify-center">
+        <div className="flex-1 overflow-hidden bg-dark-800 flex flex-col">
           {project ? (
-            <div
-              className="relative"
-              style={{ width: width + 4, height: height + 4 }}
-            >
-              <img
-                src={getImageSrc()}
-                alt={project.name}
-                className={`absolute top-0 left-0 ${valueStudy ? 'grayscale' : ''}`}
-                style={{ width, height, objectFit: 'cover' }}
-              />
-              <svg
-                className="absolute top-0 left-0"
-                width={width}
-                height={height}
-                style={{ pointerEvents: 'none' }}
-              >
-                {renderGridLines()}
-              </svg>
-              <svg
-                className="absolute top-0 left-0"
-                width={width}
-                height={height}
-                style={{ pointerEvents: 'none' }}
-              >
-                {renderNumbers()}
-              </svg>
-            </div>
+            <>
+              {/* Top Ruler - Fixed Height, Scrolls Horizontally */}
+              {showRuler && (
+                <div className="flex flex-shrink-0 h-10 bg-dark-900 border-b border-white/20">
+                  {/* Top-Left Corner */}
+                  <div className="w-10 h-10 bg-dark-950 border-r border-white/20 flex-shrink-0" />
+                  {/* Top Ruler SVG */}
+                  <div className="flex-1 overflow-x-hidden">
+                    <svg
+                      width={width}
+                      height="40"
+                      style={{ display: 'block' }}
+                      className="bg-dark-900"
+                    >
+                      {renderRuler().filter((r: any) =>
+                        r.key?.toString().startsWith('h-ruler'),
+                      )}
+                    </svg>
+                  </div>
+                </div>
+              )}
+
+              {/* Main Content Area - Image + Left Ruler */}
+              <div className="flex flex-1 overflow-hidden">
+                {/* Left Ruler - Fixed Width, Scrolls Vertically */}
+                {showRuler && (
+                  <div className="w-10 flex-shrink-0 bg-dark-900 border-r border-white/20 overflow-y-hidden">
+                    <svg width="40" height={height} className="bg-dark-900">
+                      {renderRuler().filter((r: any) =>
+                        r.key?.toString().startsWith('v-ruler'),
+                      )}
+                    </svg>
+                  </div>
+                )}
+
+                {/* Image Canvas - Scrollable */}
+                <div className="flex-1 overflow-auto bg-dark-800 scrollbar-hidden">
+                  <div
+                    className="relative inline-block"
+                    style={{ width: width + 4, height: height + 4 }}
+                  >
+                    <img
+                      src={getImageSrc()}
+                      alt={project.name}
+                      className={`absolute top-0 left-0 ${valueStudy ? 'grayscale' : ''}`}
+                      style={{ width, height, objectFit: 'cover' }}
+                    />
+                    <svg
+                      className="absolute top-0 left-0"
+                      width={width}
+                      height={height}
+                      style={{ pointerEvents: 'none' }}
+                    >
+                      {renderGridLines()}
+                    </svg>
+                    <svg
+                      className="absolute top-0 left-0"
+                      width={width}
+                      height={height}
+                      style={{ pointerEvents: 'none' }}
+                    >
+                      {renderNumbers()}
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </>
           ) : (
-            <div className="text-gray-500">Select a project from gallery</div>
+            <div className="flex items-center justify-center w-full h-full text-gray-500">
+              Select a project from gallery
+            </div>
           )}
         </div>
       </main>
@@ -590,6 +714,16 @@ const Workspace = () => {
               disabled={isLocked}
             />{' '}
             B&W Filter
+          </label>
+
+          <label className="flex gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={showRuler}
+              onChange={(e) => setShowRuler(e.target.checked)}
+              disabled={isLocked}
+            />{' '}
+            Show Ruler
           </label>
 
           {isRealSize && (

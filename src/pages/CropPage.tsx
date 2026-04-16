@@ -1,7 +1,14 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cropper from 'react-easy-crop';
-import { Upload, Save, ArrowLeft, ZoomIn, ZoomOut } from 'lucide-react';
+import {
+  Upload,
+  Save,
+  ArrowLeft,
+  ZoomIn,
+  ZoomOut,
+  Grid3x3,
+} from 'lucide-react';
 import { db, type Project } from '../lib/db';
 
 interface PaperSize {
@@ -29,6 +36,8 @@ const CropPage = () => {
   const [isCustom, setIsCustom] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<any>(null);
   const [projectName, setProjectName] = useState('Untitled Project');
+  const [showRuler, setShowRuler] = useState(true);
+  const cropperRef = useRef<HTMLDivElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -77,7 +86,7 @@ const CropPage = () => {
       0,
       0,
       croppedAreaPixels.width,
-      croppedAreaPixels.height
+      croppedAreaPixels.height,
     );
 
     const blob = await new Promise<Blob>((resolve) => {
@@ -104,7 +113,9 @@ const CropPage = () => {
     return (
       <div className="min-h-screen bg-dark-950 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-white mb-8">Upload Reference Image</h1>
+          <h1 className="text-4xl font-bold text-white mb-8">
+            Upload Reference Image
+          </h1>
           <label className="cursor-pointer">
             <input
               type="file"
@@ -180,7 +191,9 @@ const CropPage = () => {
                 className="flex-1"
               />
               <ZoomIn size={20} className="text-gray-400" />
-              <span className="text-white font-mono w-16 text-right">{Math.round(zoom * 100)}%</span>
+              <span className="text-white font-mono w-16 text-right">
+                {Math.round(zoom * 100)}%
+              </span>
             </div>
           </div>
         </div>
@@ -189,7 +202,9 @@ const CropPage = () => {
         <div className="space-y-6">
           {/* Project Name */}
           <div className="bg-dark-800 border-3 border-white shadow-neubrutal p-6">
-            <label className="block text-sm font-bold text-gray-300 mb-2">Project Name</label>
+            <label className="block text-sm font-bold text-gray-300 mb-2">
+              Project Name
+            </label>
             <input
               type="text"
               value={projectName}
@@ -239,10 +254,14 @@ const CropPage = () => {
           {/* Custom Dimensions */}
           {isCustom && (
             <div className="bg-dark-800 border-3 border-white shadow-neubrutal p-6">
-              <h3 className="text-lg font-bold text-white mb-4">Custom Dimensions</h3>
+              <h3 className="text-lg font-bold text-white mb-4">
+                Custom Dimensions
+              </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-2">Width (cm)</label>
+                  <label className="block text-sm text-gray-400 mb-2">
+                    Width (cm)
+                  </label>
                   <input
                     type="number"
                     value={customWidth}
@@ -253,7 +272,9 @@ const CropPage = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-2">Height (cm)</label>
+                  <label className="block text-sm text-gray-400 mb-2">
+                    Height (cm)
+                  </label>
                   <input
                     type="number"
                     value={customHeight}
@@ -272,21 +293,28 @@ const CropPage = () => {
 
           {/* Current Settings Info */}
           <div className="bg-dark-800 border-3 border-white shadow-neubrutal p-6">
-            <h3 className="text-lg font-bold text-white mb-2">Current Settings</h3>
+            <h3 className="text-lg font-bold text-white mb-2">
+              Current Settings
+            </h3>
             <div className="space-y-2 text-sm text-gray-400">
               <div className="flex justify-between">
                 <span>Format:</span>
-                <span className="text-white">{isCustom ? 'Custom' : selectedPaper.name}</span>
+                <span className="text-white">
+                  {isCustom ? 'Custom' : selectedPaper.name}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Dimensions:</span>
                 <span className="text-white">
-                  {isCustom ? customWidth : selectedPaper.widthCm} × {isCustom ? customHeight : selectedPaper.heightCm} cm
+                  {isCustom ? customWidth : selectedPaper.widthCm} ×{' '}
+                  {isCustom ? customHeight : selectedPaper.heightCm} cm
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>Aspect Ratio:</span>
-                <span className="text-white">{getCurrentAspectRatio().toFixed(3)}</span>
+                <span className="text-white">
+                  {getCurrentAspectRatio().toFixed(3)}
+                </span>
               </div>
             </div>
           </div>
