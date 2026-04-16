@@ -128,80 +128,81 @@ const Workspace = () => {
     return nums;
   };
 
-  const handleDownload = () => {
-    if (!project) return;
-    
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    ctx.fillStyle = '#0f172a';
-    ctx.fillRect(0, 0, width, height);
-    
-    const img = new Image();
-    const src = getImageSrc();
-    img.src = src;
-    
-    const onImgLoad = () => {
-      ctx.drawImage(img, 0, 0, width, height);
-      ctx.strokeStyle = lineColor;
-      ctx.lineWidth = lineThickness;
-      
-      const maxCols = Math.floor((project.widthCm || 21) / gapCm);
-      const maxRows = Math.floor((project.heightCm || 29.7) / gapCm);
-      
-      if (showVertical) {
-        for (let i = 1; i <= maxCols; i++) {
-          ctx.beginPath();
-          ctx.moveTo(i * gapCm * 37.8, 0);
-          ctx.lineTo(i * gapCm * 37.8, height);
-          ctx.stroke();
-        }
-      }
-      if (showHorizontal) {
-        for (let i = 1; i <= maxRows; i++) {
-          ctx.beginPath();
-          ctx.moveTo(0, i * gapCm * 37.8);
-          ctx.lineTo(width, i * gapCm * 37.8);
-          ctx.stroke();
-        }
-      }
-      if (showDiagonal) {
-        for (let i = 1; i <= maxCols; i++) {
-          for (let j = 1; j <= maxRows; j++) {
-            const x = i * gapCm * 37.8;
-            const y = j * gapCm * 37.8;
-            const xIn = (i - 1) * gapCm * 37.8;
-            const yIn = (j - 1) * gapCm * 37.8;
-            ctx.beginPath();
-            ctx.moveTo(xIn, yIn);
-            ctx.lineTo(x, y);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(x, yIn);
-            ctx.lineTo(xIn, y);
-            ctx.stroke();
+    const handleDownload = () => {
+        if (!project) return;
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, width, height);
+        
+        const img = new Image();
+        img.src = getImageSrc();
+        
+        const onImgLoad = () => {
+          // Draw the cropped image scaled to fill the canvas
+          ctx.drawImage(img, 0, 0, width, height);
+          ctx.strokeStyle = lineColor;
+          ctx.lineWidth = lineThickness;
+          
+          const maxCols = Math.floor((project.widthCm || 21) / gapCm);
+          const maxRows = Math.floor((project.heightCm || 29.7) / gapCm);
+          
+          if (showVertical) {
+            for (let i = 1; i <= maxCols; i++) {
+              ctx.beginPath();
+              ctx.moveTo(i * gapCm * 37.8, 0);
+              ctx.lineTo(i * gapCm * 37.8, height);
+              ctx.stroke();
+            }
           }
-        }
-      }
-      
-      const link = document.createElement('a');
-      link.download = `${project.name || 'project'}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    };
+          if (showHorizontal) {
+            for (let i = 1; i <= maxRows; i++) {
+              ctx.beginPath();
+              ctx.moveTo(0, i * gapCm * 37.8);
+              ctx.lineTo(width, i * gapCm * 37.8);
+              ctx.stroke();
+            }
+          }
+          if (showDiagonal) {
+            for (let i = 1; i <= maxCols; i++) {
+              for (let j = 1; j <= maxRows; j++) {
+                const x = i * gapCm * 37.8;
+                const y = j * gapCm * 37.8;
+                const xIn = (i - 1) * gapCm * 37.8;
+                const yIn = (j - 1) * gapCm * 37.8;
+                ctx.beginPath();
+                ctx.moveTo(xIn, yIn);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(x, yIn);
+                ctx.lineTo(xIn, y);
+                ctx.stroke();
+              }
+            }
+          }
+          
+          const link = document.createElement('a');
+          link.download = `${project.name || 'project'}.png`;
+          link.href = canvas.toDataURL('image/png');
+          link.click();
+            };
+            
+            img.src = getImageSrc();
+            
+            img.onload = onImgLoad;
+            if (img.complete) onImgLoad();
+        };
     
-    img.onload = onImgLoad;
-    if (img.complete) onImgLoad();
-  };
-
-  const ToggleBtn = ({ active, onClick }: { active: boolean; onClick: () => void }) => (
-    <button onClick={onClick} className={`w-12 h-6 text-xs font-bold border-2 ${active ? 'bg-grass-500 text-dark-950 border-grass-400' : 'bg-dark-800 text-gray-400 border-white/30'}`}>
-      {active ? 'ON' : 'OFF'}
-    </button>
-  );
+    const ToggleBtn = ({ active, onClick }: { active: boolean; onClick: () => void }) => (
+        <button onClick={onClick} className={`w-12 h-6 text-xs font-bold border-2 ${active ? 'bg-grass-500 text-dark-950 border-grass-400' : 'bg-dark-800 text-gray-400 border-white/30'}`}>
+            {active ? 'ON' : 'OFF'}
+        </button>
+    );
 
   return (
     <div className="h-screen flex bg-dark-950">
