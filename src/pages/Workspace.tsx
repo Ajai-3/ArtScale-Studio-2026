@@ -1,6 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { ArrowLeft, Download } from 'lucide-react';
+import {
+  ArrowLeft,
+  Download,
+  Lock,
+  Unlock,
+  ZoomIn,
+  ZoomOut,
+} from 'lucide-react';
 import { db, type Project } from '../lib/db';
 
 const Workspace = () => {
@@ -24,6 +31,10 @@ const Workspace = () => {
   const [verColor, setVerColor] = useState('#ffffff');
   const [horColor, setHorColor] = useState('#ffffff');
   const [diagColor, setDiagColor] = useState('#ffffff');
+  const [isRealSize, setIsRealSize] = useState(false);
+  const [ppi, setPpi] = useState(96);
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {
     if (id) loadProject();
@@ -36,8 +47,10 @@ const Workspace = () => {
     }
   };
 
-  const width = (project?.widthCm || 21) * 37.8;
-  const height = (project?.heightCm || 29.7) * 37.8;
+  // Calculate real size: 1 cm = ppi / 2.54 pixels
+  const pixelsPerCm = isRealSize ? ppi / 2.54 : 37.8;
+  const width = (project?.widthCm || 21) * pixelsPerCm * zoomLevel;
+  const height = (project?.heightCm || 29.7) * pixelsPerCm * zoomLevel;
   const gapCm = gridSpacing;
   const effectiveVerColor = useGlobalColor ? lineColor : verColor;
   const effectiveHorColor = useGlobalColor ? lineColor : horColor;
@@ -57,7 +70,7 @@ const Workspace = () => {
 
     if (showVertical) {
       for (let i = 1; i <= maxCols; i++) {
-        const x = i * gapCm * 37.8;
+        const x = i * gapCm * pixelsPerCm * zoomLevel;
         lines.push(
           <line
             key={`v-${i}`}
@@ -75,7 +88,7 @@ const Workspace = () => {
 
     if (showHorizontal) {
       for (let i = 1; i <= maxRows; i++) {
-        const y = i * gapCm * 37.8;
+        const y = i * gapCm * pixelsPerCm * zoomLevel;
         lines.push(
           <line
             key={`h-${i}`}
@@ -94,10 +107,10 @@ const Workspace = () => {
     if (showDiagonal) {
       for (let i = 1; i <= maxCols; i++) {
         for (let j = 1; j <= maxRows; j++) {
-          const x = i * gapCm * 37.8;
-          const y = j * gapCm * 37.8;
-          const xIn = (i - 1) * gapCm * 37.8;
-          const yIn = (j - 1) * gapCm * 37.8;
+          const x = i * gapCm * pixelsPerCm * zoomLevel;
+          const y = j * gapCm * pixelsPerCm * zoomLevel;
+          const xIn = (i - 1) * gapCm * pixelsPerCm * zoomLevel;
+          const yIn = (j - 1) * gapCm * pixelsPerCm * zoomLevel;
           lines.push(
             <g key={`d-${i}-${j}`}>
               <line
@@ -137,7 +150,7 @@ const Workspace = () => {
         nums.push(
           <text
             key={`nt-${i}`}
-            x={i * gapCm * 37.8 + 4}
+            x={i * gapCm * pixelsPerCm * zoomLevel + 4}
             y={14}
             fill={lineColor}
             fontSize="11"
@@ -151,7 +164,7 @@ const Workspace = () => {
         nums.push(
           <text
             key={`nb-${i}`}
-            x={i * gapCm * 37.8 + 4}
+            x={i * gapCm * pixelsPerCm * zoomLevel + 4}
             y={height - 4}
             fill={lineColor}
             fontSize="11"
@@ -169,7 +182,7 @@ const Workspace = () => {
           <text
             key={`nl-${i}`}
             x={4}
-            y={i * gapCm * 37.8 + 12}
+            y={i * gapCm * pixelsPerCm * zoomLevel + 12}
             fill={lineColor}
             fontSize="11"
             fontFamily="monospace"
@@ -183,7 +196,7 @@ const Workspace = () => {
           <text
             key={`nr-${i}`}
             x={width - 28}
-            y={i * gapCm * 37.8 + 12}
+            y={i * gapCm * pixelsPerCm * zoomLevel + 12}
             fill={lineColor}
             fontSize="11"
             fontFamily="monospace"
@@ -223,26 +236,26 @@ const Workspace = () => {
       if (showVertical) {
         for (let i = 1; i <= maxCols; i++) {
           ctx.beginPath();
-          ctx.moveTo(i * gapCm * 37.8, 0);
-          ctx.lineTo(i * gapCm * 37.8, height);
+          ctx.moveTo(i * gapCm * pixelsPerCm * zoomLevel, 0);
+          ctx.lineTo(i * gapCm * pixelsPerCm * zoomLevel, height);
           ctx.stroke();
         }
       }
       if (showHorizontal) {
         for (let i = 1; i <= maxRows; i++) {
           ctx.beginPath();
-          ctx.moveTo(0, i * gapCm * 37.8);
-          ctx.lineTo(width, i * gapCm * 37.8);
+          ctx.moveTo(0, i * gapCm * pixelsPerCm * zoomLevel);
+          ctx.lineTo(width, i * gapCm * pixelsPerCm * zoomLevel);
           ctx.stroke();
         }
       }
       if (showDiagonal) {
         for (let i = 1; i <= maxCols; i++) {
           for (let j = 1; j <= maxRows; j++) {
-            const x = i * gapCm * 37.8;
-            const y = j * gapCm * 37.8;
-            const xIn = (i - 1) * gapCm * 37.8;
-            const yIn = (j - 1) * gapCm * 37.8;
+            const x = i * gapCm * pixelsPerCm * zoomLevel;
+            const y = j * gapCm * pixelsPerCm * zoomLevel;
+            const xIn = (i - 1) * gapCm * pixelsPerCm * zoomLevel;
+            const yIn = (j - 1) * gapCm * pixelsPerCm * zoomLevel;
             ctx.beginPath();
             ctx.moveTo(xIn, yIn);
             ctx.lineTo(x, y);
@@ -265,20 +278,28 @@ const Workspace = () => {
 
       for (let i = 0; i < maxColsNum; i++) {
         if (showNumbers.top) {
-          ctx.fillText(String(i), i * gapCm * 37.8 + 4, 14);
+          ctx.fillText(String(i), i * gapCm * pixelsPerCm * zoomLevel + 4, 14);
         }
         if (showNumbers.bottom) {
-          ctx.fillText(String(i), i * gapCm * 37.8 + 4, height - 4);
+          ctx.fillText(
+            String(i),
+            i * gapCm * pixelsPerCm * zoomLevel + 4,
+            height - 4,
+          );
         }
       }
 
       ctx.textAlign = 'left';
       for (let i = 0; i < maxRowsNum; i++) {
         if (showNumbers.left) {
-          ctx.fillText(String(i), 4, i * gapCm * 37.8 + 12);
+          ctx.fillText(String(i), 4, i * gapCm * pixelsPerCm * zoomLevel + 12);
         }
         if (showNumbers.right) {
-          ctx.fillText(String(i), width - 28, i * gapCm * 37.8 + 12);
+          ctx.fillText(
+            String(i),
+            width - 28,
+            i * gapCm * pixelsPerCm * zoomLevel + 12,
+          );
         }
       }
 
@@ -297,13 +318,16 @@ const Workspace = () => {
   const ToggleBtn = ({
     active,
     onClick,
+    disabled = false,
   }: {
     active: boolean;
     onClick: () => void;
+    disabled?: boolean;
   }) => (
     <button
       onClick={onClick}
-      className={`w-12 h-6 text-xs font-bold border-2 ${active ? 'bg-grass-500 text-dark-950 border-grass-400' : 'bg-dark-800 text-gray-400 border-white/30'}`}
+      disabled={disabled}
+      className={`w-12 h-6 text-xs font-bold border-2 ${active ? 'bg-grass-500 text-dark-950 border-grass-400' : 'bg-dark-800 text-gray-400 border-white/30'} ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
     >
       {active ? 'ON' : 'OFF'}
     </button>
@@ -315,19 +339,40 @@ const Workspace = () => {
         <header className="bg-dark-900 border-b border-white px-4 py-2 flex justify-between items-center">
           <button
             onClick={() => navigate('/gallery')}
-            className="text-gray-400 hover:text-white text-sm flex items-center gap-1"
+            disabled={isLocked}
+            className={`text-sm flex items-center gap-1 ${isLocked ? 'text-gray-600 cursor-not-allowed' : 'text-gray-400 hover:text-white'}`}
           >
             <ArrowLeft size={16} /> Gallery
           </button>
           <h1 className="text-lg font-bold text-grass-400">
             {project?.name || 'Untitled'}
           </h1>
-          <button
-            onClick={handleDownload}
-            className="bg-grass-500 text-dark-950 px-3 py-1 text-sm font-bold border-2 border-white"
-          >
-            <Download size={14} className="inline" /> Download
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsRealSize(!isRealSize)}
+              disabled={isLocked}
+              className={`px-3 py-1 text-sm font-bold border-2 ${isRealSize ? 'bg-grass-500 text-dark-950 border-grass-400' : 'bg-dark-800 text-gray-400 border-white/30'} ${isLocked ? 'cursor-not-allowed opacity-50' : 'hover:border-grass-400'}`}
+            >
+              Real Size
+            </button>
+            <button
+              onClick={() => setIsLocked(!isLocked)}
+              className={`px-3 py-1 text-sm font-bold border-2 ${isLocked ? 'bg-red-600 text-white border-red-400' : 'bg-dark-800 text-gray-400 border-white/30'}`}
+            >
+              {isLocked ? (
+                <Lock size={14} className="inline" />
+              ) : (
+                <Unlock size={14} className="inline" />
+              )}
+            </button>
+            <button
+              onClick={handleDownload}
+              disabled={isLocked}
+              className={`bg-grass-500 text-dark-950 px-3 py-1 text-sm font-bold border-2 border-white ${isLocked ? 'cursor-not-allowed opacity-50' : 'hover:shadow-neubrutal'}`}
+            >
+              <Download size={14} className="inline" /> Download
+            </button>
+          </div>
         </header>
 
         <div className="flex-1 overflow-auto bg-dark-800 p-4 flex items-center justify-center">
@@ -383,14 +428,16 @@ const Workspace = () => {
               }
               min="1"
               step="0.5"
-              className="w-full bg-dark-950 border border-white/30 px-2 py-1"
+              disabled={isLocked}
+              className={`w-full bg-dark-950 border border-white/30 px-2 py-1 ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
             />
             <div className="flex flex-wrap gap-1 mt-2">
               {[1, 1.5, 2, 2.5, 3, 4, 5, 10].map((v) => (
                 <button
                   key={v}
                   onClick={() => setGridSpacing(v)}
-                  className={`px-2 py-1 text-xs ${gridSpacing === v ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'}`}
+                  disabled={isLocked}
+                  className={`px-2 py-1 text-xs ${gridSpacing === v ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                 >
                   {v}
                 </button>
@@ -404,6 +451,7 @@ const Workspace = () => {
               <ToggleBtn
                 active={showVertical}
                 onClick={() => setShowVertical(!showVertical)}
+                disabled={isLocked}
               />
             </div>
             <div className="flex justify-between">
@@ -411,6 +459,7 @@ const Workspace = () => {
               <ToggleBtn
                 active={showHorizontal}
                 onClick={() => setShowHorizontal(!showHorizontal)}
+                disabled={isLocked}
               />
             </div>
             <div className="flex justify-between">
@@ -418,6 +467,7 @@ const Workspace = () => {
               <ToggleBtn
                 active={showDiagonal}
                 onClick={() => setShowDiagonal(!showDiagonal)}
+                disabled={isLocked}
               />
             </div>
           </div>
@@ -427,7 +477,8 @@ const Workspace = () => {
             <div className="grid grid-cols-4 gap-1">
               <button
                 onClick={() => setShowNumbers((p) => ({ ...p, top: !p.top }))}
-                className={`py-1 text-xs ${showNumbers.top ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'}`}
+                disabled={isLocked}
+                className={`py-1 text-xs ${showNumbers.top ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
               >
                 Top
               </button>
@@ -435,13 +486,15 @@ const Workspace = () => {
                 onClick={() =>
                   setShowNumbers((p) => ({ ...p, bottom: !p.bottom }))
                 }
-                className={`py-1 text-xs ${showNumbers.bottom ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'}`}
+                disabled={isLocked}
+                className={`py-1 text-xs ${showNumbers.bottom ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
               >
                 Bottom
               </button>
               <button
                 onClick={() => setShowNumbers((p) => ({ ...p, left: !p.left }))}
-                className={`py-1 text-xs ${showNumbers.left ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'}`}
+                disabled={isLocked}
+                className={`py-1 text-xs ${showNumbers.left ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
               >
                 Left
               </button>
@@ -449,7 +502,8 @@ const Workspace = () => {
                 onClick={() =>
                   setShowNumbers((p) => ({ ...p, right: !p.right }))
                 }
-                className={`py-1 text-xs ${showNumbers.right ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'}`}
+                disabled={isLocked}
+                className={`py-1 text-xs ${showNumbers.right ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
               >
                 Right
               </button>
@@ -462,6 +516,7 @@ const Workspace = () => {
                 type="checkbox"
                 checked={useGlobalColor}
                 onChange={(e) => setUseGlobalColor(e.target.checked)}
+                disabled={isLocked}
               />{' '}
               Same color
             </label>
@@ -471,7 +526,8 @@ const Workspace = () => {
                   type="color"
                   value={lineColor}
                   onChange={(e) => setLineColor(e.target.value)}
-                  className="w-8 h-8"
+                  disabled={isLocked}
+                  className={`w-8 h-8 ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                 />
                 <span className="text-sm">{lineColor}</span>
               </div>
@@ -482,7 +538,8 @@ const Workspace = () => {
                     type="color"
                     value={verColor}
                     onChange={(e) => setVerColor(e.target.value)}
-                    className="w-7 h-7"
+                    disabled={isLocked}
+                    className={`w-7 h-7 ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                   />
                   <span className="text-xs">V</span>
                 </div>
@@ -491,7 +548,8 @@ const Workspace = () => {
                     type="color"
                     value={horColor}
                     onChange={(e) => setHorColor(e.target.value)}
-                    className="w-7 h-7"
+                    disabled={isLocked}
+                    className={`w-7 h-7 ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                   />
                   <span className="text-xs">H</span>
                 </div>
@@ -500,7 +558,8 @@ const Workspace = () => {
                     type="color"
                     value={diagColor}
                     onChange={(e) => setDiagColor(e.target.value)}
-                    className="w-7 h-7"
+                    disabled={isLocked}
+                    className={`w-7 h-7 ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                   />
                   <span className="text-xs">D</span>
                 </div>
@@ -518,7 +577,8 @@ const Workspace = () => {
               max="5"
               value={lineThickness}
               onChange={(e) => setLineThickness(parseInt(e.target.value))}
-              className="w-full"
+              disabled={isLocked}
+              className={`w-full ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
             />
           </div>
 
@@ -527,9 +587,73 @@ const Workspace = () => {
               type="checkbox"
               checked={valueStudy}
               onChange={(e) => setValueStudy(e.target.checked)}
+              disabled={isLocked}
             />{' '}
             B&W Filter
           </label>
+
+          {isRealSize && (
+            <>
+              <div className="border-t border-dark-700 pt-4">
+                <label className="block text-sm font-bold mb-2">
+                  PPI: {ppi}
+                </label>
+                <input
+                  type="range"
+                  min="72"
+                  max="220"
+                  value={ppi}
+                  onChange={(e) => setPpi(parseInt(e.target.value))}
+                  disabled={isLocked}
+                  className="w-full"
+                />
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {[72, 96, 110, 120, 144].map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setPpi(p)}
+                      disabled={isLocked}
+                      className={`px-2 py-1 text-xs ${ppi === p ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold mb-2">
+                  Zoom: {Math.round(zoomLevel * 100)}%
+                </label>
+                <div className="flex gap-2 items-center">
+                  <button
+                    onClick={() => setZoomLevel(Math.max(0.1, zoomLevel - 0.1))}
+                    disabled={isLocked}
+                    className={`px-2 py-1 bg-dark-800 border border-white/30 ${isLocked ? 'cursor-not-allowed opacity-50' : 'hover:border-white'}`}
+                  >
+                    <ZoomOut size={14} />
+                  </button>
+                  <input
+                    type="range"
+                    min="0.1"
+                    max="3"
+                    step="0.1"
+                    value={zoomLevel}
+                    onChange={(e) => setZoomLevel(parseFloat(e.target.value))}
+                    disabled={isLocked}
+                    className="flex-1"
+                  />
+                  <button
+                    onClick={() => setZoomLevel(Math.min(3, zoomLevel + 0.1))}
+                    disabled={isLocked}
+                    className={`px-2 py-1 bg-dark-800 border border-white/30 ${isLocked ? 'cursor-not-allowed opacity-50' : 'hover:border-white'}`}
+                  >
+                    <ZoomIn size={14} />
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
 
           {project && (
             <div className="text-sm text-gray-400 pt-2 border-t border-dark-700">
