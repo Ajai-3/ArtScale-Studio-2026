@@ -56,7 +56,7 @@ const Gallery = () => {
                     <img src={URL.createObjectURL(project.imageData)} alt={project.name} className="w-full h-full object-cover" />
                   )}
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-4">
-                    <button onClick={() => navigate('/workspace')} className="bg-grass-500 text-dark-950 px-4 py-2 font-bold border-2 border-white">
+                    <button onClick={() => navigate(`/workspace/${project.id}`)} className="bg-grass-500 text-dark-950 px-4 py-2 font-bold border-2 border-white">
                       Open
                     </button>
                     <button onClick={() => setDeleteId(project.id || null)} className="bg-red-500 text-white px-4 py-2 font-bold border-2 border-white">

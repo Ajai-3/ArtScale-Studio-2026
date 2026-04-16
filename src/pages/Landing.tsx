@@ -12,7 +12,7 @@ const Landing = () => {
           <div className="hidden md:flex gap-8">
             <a href="#features" className="hover:text-grass-400 transition-colors">Features</a>
             <a href="#how-it-works" className="hover:text-grass-400 transition-colors">How It Works</a>
-            <a href="#pricing" className="hover:text-grass-400 transition-colors">Pricing</a>
+            <a href="/gallery" className="hover:text-grass-400 transition-colors">Gallery</a>
           </div>
           <button onClick={() => navigate('/crop')} className="bg-grass-500 text-dark-950 px-6 py-3 font-bold border-3 border-white shadow-neubrutal hover:shadow-neubrutal-md hover:translate-x-1 hover:translate-y-1 transition-all">
             Get Started
@@ -213,7 +213,7 @@ const Landing = () => {
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-grass-400">Features</a></li>
                 <li><a href="#" className="hover:text-grass-400">Workspace</a></li>
-                <li><a href="#" className="hover:text-grass-400">Gallery</a></li>
+                <li><a href="/gallery" className="hover:text-grass-400">Gallery</a></li>
               </ul>
             </div>
             <div>
