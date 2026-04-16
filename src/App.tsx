@@ -1,13 +1,16 @@
 import { Route, Routes } from 'react-router-dom';
 import Landing from './pages/Landing';
 import CropPage from './pages/CropPage';
+import Gallery from './pages/Gallery';
+import Workspace from './pages/Workspace';
 
 const App = () => {
   return (
     <Routes>
       <Route path='/' element={<Landing />} />
       <Route path='/crop' element={<CropPage />} />
-      <Route path='/workspace' element={<div className="min-h-screen bg-dark-950 text-white flex items-center justify-center">Workspace (Coming Soon)</div>} />
+      <Route path='/gallery' element={<Gallery />} />
+      <Route path='/workspace' element={<Workspace />} />
     </Routes>
   );
 };
