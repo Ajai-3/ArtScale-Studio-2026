@@ -143,7 +143,7 @@ const Workspace = () => {
             fontSize="11"
             fontFamily="monospace"
           >
-            {Math.round(i * gapCm * 10) / 10}
+            {i}
           </text>,
         );
       }
@@ -157,7 +157,7 @@ const Workspace = () => {
             fontSize="11"
             fontFamily="monospace"
           >
-            {Math.round(i * gapCm * 10) / 10}
+            {i}
           </text>,
         );
       }
@@ -174,7 +174,7 @@ const Workspace = () => {
             fontSize="11"
             fontFamily="monospace"
           >
-            {Math.round(i * gapCm * 10) / 10}
+            {i}
           </text>,
         );
       }
@@ -188,7 +188,7 @@ const Workspace = () => {
             fontSize="11"
             fontFamily="monospace"
           >
-            {Math.round(i * gapCm * 10) / 10}
+            {i}
           </text>,
         );
       }
@@ -265,36 +265,20 @@ const Workspace = () => {
 
       for (let i = 0; i < maxColsNum; i++) {
         if (showNumbers.top) {
-          ctx.fillText(
-            String(Math.round(i * gapCm * 10) / 10),
-            i * gapCm * 37.8 + 4,
-            14,
-          );
+          ctx.fillText(String(i), i * gapCm * 37.8 + 4, 14);
         }
         if (showNumbers.bottom) {
-          ctx.fillText(
-            String(Math.round(i * gapCm * 10) / 10),
-            i * gapCm * 37.8 + 4,
-            height - 4,
-          );
+          ctx.fillText(String(i), i * gapCm * 37.8 + 4, height - 4);
         }
       }
 
       ctx.textAlign = 'left';
       for (let i = 0; i < maxRowsNum; i++) {
         if (showNumbers.left) {
-          ctx.fillText(
-            String(Math.round(i * gapCm * 10) / 10),
-            4,
-            i * gapCm * 37.8 + 12,
-          );
+          ctx.fillText(String(i), 4, i * gapCm * 37.8 + 12);
         }
         if (showNumbers.right) {
-          ctx.fillText(
-            String(Math.round(i * gapCm * 10) / 10),
-            width - 28,
-            i * gapCm * 37.8 + 12,
-          );
+          ctx.fillText(String(i), width - 28, i * gapCm * 37.8 + 12);
         }
       }
 
