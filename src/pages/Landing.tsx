@@ -1,6 +1,8 @@
 import { ArrowRight, Ruler, Grid3x3, Download, Palette, Layers } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Landing = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-dark-950 text-white overflow-x-hidden">
       {/* Navigation */}
@@ -12,7 +14,7 @@ const Landing = () => {
             <a href="#how-it-works" className="hover:text-grass-400 transition-colors">How It Works</a>
             <a href="#pricing" className="hover:text-grass-400 transition-colors">Pricing</a>
           </div>
-          <button className="bg-grass-500 text-dark-950 px-6 py-3 font-bold border-3 border-white shadow-neubrutal hover:shadow-neubrutal-md hover:translate-x-1 hover:translate-y-1 transition-all">
+          <button onClick={() => navigate('/crop')} className="bg-grass-500 text-dark-950 px-6 py-3 font-bold border-3 border-white shadow-neubrutal hover:shadow-neubrutal-md hover:translate-x-1 hover:translate-y-1 transition-all">
             Get Started
           </button>
         </div>
@@ -30,7 +32,7 @@ const Landing = () => {
               Real-World Scaling for traditional artists. Take physical measurements directly from your screen to understand exactly how your art fits on actual paper (A1–A5).
             </p>
             <div className="flex gap-4">
-              <button className="bg-grass-500 text-dark-950 px-8 py-4 font-bold border-3 border-white shadow-neubrutal hover:shadow-neubrutal-lg hover:translate-x-1.5 hover:translate-y-1.5 transition-all flex items-center gap-2">
+              <button onClick={() => navigate('/crop')} className="bg-grass-500 text-dark-950 px-8 py-4 font-bold border-3 border-white shadow-neubrutal hover:shadow-neubrutal-lg hover:translate-x-1.5 hover:translate-y-1.5 transition-all flex items-center gap-2">
                 Start Creating <ArrowRight size={20} />
               </button>
               <button className="bg-dark-800 text-white px-8 py-4 font-bold border-3 border-white shadow-neubrutal hover:shadow-neubrutal-md hover:translate-x-1 hover:translate-y-1 transition-all">
@@ -192,7 +194,7 @@ const Landing = () => {
           <p className="text-xl text-dark-800 mb-8">
             Join thousands of artists using ArtistScale Studio for precise physical scaling
           </p>
-          <button className="bg-dark-950 text-white px-10 py-5 font-bold border-3 border-white shadow-neubrutal-xl hover:shadow-neubrutal hover:translate-x-1 hover:translate-y-1 transition-all text-lg">
+          <button onClick={() => navigate('/crop')} className="bg-dark-950 text-white px-10 py-5 font-bold border-3 border-white shadow-neubrutal-xl hover:shadow-neubrutal hover:translate-x-1 hover:translate-y-1 transition-all text-lg">
             Launch Workspace
           </button>
         </div>
