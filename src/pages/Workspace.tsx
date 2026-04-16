@@ -292,6 +292,26 @@ const Workspace = () => {
     return rulers;
   };
 
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    if (isLocked) return;
+
+    e.preventDefault();
+
+    // Scroll up (negative deltaY) = zoom in, Scroll down (positive deltaY) = zoom out
+    const zoomFactor = 0.1;
+    let newZoom = zoomLevel;
+
+    if (e.deltaY < 0) {
+      // Scroll up - zoom in
+      newZoom = Math.min(3, zoomLevel + zoomFactor);
+    } else {
+      // Scroll down - zoom out
+      newZoom = Math.max(0.1, zoomLevel - zoomFactor);
+    }
+
+    setZoomLevel(newZoom);
+  };
+
   const handleDownload = () => {
     if (!project) return;
     const canvas = document.createElement('canvas');
@@ -495,7 +515,10 @@ const Workspace = () => {
                 )}
 
                 {/* Image Canvas - Scrollable */}
-                <div className="flex-1 overflow-auto bg-dark-800 scrollbar-hidden">
+                <div
+                  className="flex-1 overflow-auto bg-dark-800 scrollbar-hidden"
+                  onWheel={handleWheel}
+                >
                   <div
                     className="relative inline-block"
                     style={{ width: width + 4, height: height + 4 }}
