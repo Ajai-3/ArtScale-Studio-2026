@@ -96,8 +96,8 @@ const CropPage = () => {
       createdAt: new Date(),
     };
 
-    await db.projects.add(project as Project);
-    navigate('/workspace');
+    const id = await db.projects.add(project as Project);
+    navigate(`/workspace/${id}`);
   };
 
   if (!image) {
