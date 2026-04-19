@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cropper from 'react-easy-crop';
 import {
@@ -7,9 +7,9 @@ import {
   ArrowLeft,
   ZoomIn,
   ZoomOut,
-  Grid3x3,
 } from 'lucide-react';
 import { db, type Project } from '../lib/db';
+import { Button } from '../components/ui/button';
 
 interface PaperSize {
   name: string;
@@ -111,9 +111,9 @@ const CropPage = () => {
 
   if (!image) {
     return (
-      <div className="min-h-screen bg-dark-950 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-white mb-8">
+          <h1 className="text-4xl font-bold text-foreground mb-8">
             Upload Reference Image
           </h1>
           <label className="cursor-pointer">
@@ -123,10 +123,10 @@ const CropPage = () => {
               onChange={handleImageUpload}
               className="hidden"
             />
-            <div className="bg-dark-800 border-3 border-white shadow-neubrutal-lg p-12 hover:shadow-neubrutal-xl hover:-translate-y-1 transition-all">
-              <Upload size={64} className="mx-auto mb-4 text-grass-400" />
-              <p className="text-white text-lg">Click to upload image</p>
-              <p className="text-gray-400 mt-2">Supports JPG, PNG, WebP</p>
+            <div className="bg-card border p-12 hover:shadow-lg transition-all rounded-lg">
+              <Upload size={64} className="mx-auto mb-4 text-primary" />
+              <p className="text-foreground text-lg">Click to upload image</p>
+              <p className="text-muted-foreground mt-2">Supports JPG, PNG, WebP</p>
             </div>
           </label>
         </div>
@@ -135,30 +135,33 @@ const CropPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-dark-950">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-dark-900 border-b-3 border-white shadow-neubrutal">
+      <header className="bg-card border-b">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <button
+          <Button
             onClick={() => setImage(null)}
-            className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+            variant="ghost"
+            size="sm"
+            className="gap-2"
           >
             <ArrowLeft size={20} /> Back
-          </button>
-          <h1 className="text-2xl font-bold text-grass-400">Crop Image</h1>
-          <button
+          </Button>
+          <h1 className="text-2xl font-bold text-primary">Crop Image</h1>
+          <Button
             onClick={handleSave}
-            className="bg-grass-500 text-dark-950 px-6 py-3 font-bold border-3 border-white shadow-neubrutal hover:shadow-neubrutal-md hover:translate-x-1 hover:translate-y-1 transition-all flex items-center gap-2"
+            size="sm"
+            className="gap-2"
           >
             <Save size={20} /> Save & Continue
-          </button>
+          </Button>
         </div>
       </header>
 
       <div className="max-w-7xl mx-auto p-6 grid lg:grid-cols-3 gap-6">
         {/* Crop Area */}
         <div className="lg:col-span-2">
-          <div className="relative h-[600px] bg-dark-800 border-3 border-white shadow-neubrutal-lg">
+          <div className="relative h-[600px] bg-card border rounded-lg">
             <Cropper
               image={image}
               crop={crop}
@@ -171,16 +174,16 @@ const CropPage = () => {
               showGrid={false}
               style={{
                 containerStyle: {
-                  background: '#1e293b',
+                  background: 'hsl(var(--card))',
                 },
               }}
             />
           </div>
 
           {/* Zoom Controls */}
-          <div className="mt-4 bg-dark-800 border-3 border-white shadow-neubrutal p-4">
+          <div className="mt-4 bg-card border rounded-lg p-4">
             <div className="flex items-center gap-4">
-              <ZoomOut size={20} className="text-gray-400" />
+              <ZoomOut size={20} className="text-muted-foreground" />
               <input
                 type="range"
                 min={1}
@@ -190,8 +193,8 @@ const CropPage = () => {
                 onChange={(e) => setZoom(Number(e.target.value))}
                 className="flex-1"
               />
-              <ZoomIn size={20} className="text-gray-400" />
-              <span className="text-white font-mono w-16 text-right">
+              <ZoomIn size={20} className="text-muted-foreground" />
+              <span className="text-foreground font-mono w-16 text-right">
                 {Math.round(zoom * 100)}%
               </span>
             </div>
@@ -201,21 +204,21 @@ const CropPage = () => {
         {/* Settings Panel */}
         <div className="space-y-6">
           {/* Project Name */}
-          <div className="bg-dark-800 border-3 border-white shadow-neubrutal p-6">
-            <label className="block text-sm font-bold text-gray-300 mb-2">
+          <div className="bg-card border rounded-lg p-6">
+            <label className="block text-sm font-bold text-muted-foreground mb-2">
               Project Name
             </label>
             <input
               type="text"
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
-              className="w-full bg-dark-900 border-2 border-white/20 text-white px-4 py-3 focus:border-grass-400 outline-none"
+              className="w-full bg-secondary border border-input text-foreground px-4 py-3 rounded focus:ring-2 focus:ring-primary outline-none"
             />
           </div>
 
           {/* Paper Size Selection */}
-          <div className="bg-dark-800 border-3 border-white shadow-neubrutal p-6">
-            <h3 className="text-lg font-bold text-white mb-4">Paper Size</h3>
+          <div className="bg-card border rounded-lg p-6">
+            <h3 className="text-lg font-bold text-foreground mb-4">Paper Size</h3>
             <div className="space-y-2">
               {PAPER_SIZES.map((paper) => (
                 <button
@@ -224,15 +227,15 @@ const CropPage = () => {
                     setSelectedPaper(paper);
                     setIsCustom(false);
                   }}
-                  className={`w-full p-4 border-3 transition-all ${
+                  className={`w-full p-4 border rounded transition-all ${
                     !isCustom && selectedPaper.name === paper.name
-                      ? 'border-grass-400 bg-grass-500/10'
-                      : 'border-white/20 hover:border-white/40'
+                      ? 'border-primary bg-primary/10'
+                      : 'border-input hover:border-primary/50'
                   }`}
                 >
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-white">{paper.name}</span>
-                    <span className="text-sm text-gray-400">
+                    <span className="font-bold text-foreground">{paper.name}</span>
+                    <span className="text-sm text-muted-foreground">
                       {paper.widthCm} × {paper.heightCm} cm
                     </span>
                   </div>
@@ -240,79 +243,79 @@ const CropPage = () => {
               ))}
               <button
                 onClick={() => setIsCustom(true)}
-                className={`w-full p-4 border-3 transition-all ${
+                className={`w-full p-4 border rounded transition-all ${
                   isCustom
-                    ? 'border-grass-400 bg-grass-500/10'
-                    : 'border-white/20 hover:border-white/40'
+                    ? 'border-primary bg-primary/10'
+                    : 'border-input hover:border-primary/50'
                 }`}
               >
-                <span className="font-bold text-white">Custom</span>
+                <span className="font-bold text-foreground">Custom</span>
               </button>
             </div>
           </div>
 
           {/* Custom Dimensions */}
           {isCustom && (
-            <div className="bg-dark-800 border-3 border-white shadow-neubrutal p-6">
-              <h3 className="text-lg font-bold text-white mb-4">
+            <div className="bg-card border rounded-lg p-6">
+              <h3 className="text-lg font-bold text-foreground mb-4">
                 Custom Dimensions
               </h3>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-2">
+                  <label className="block text-sm text-muted-foreground mb-2">
                     Width (cm)
                   </label>
                   <input
                     type="number"
                     value={customWidth}
                     onChange={(e) => setCustomWidth(Number(e.target.value))}
-                    className="w-full bg-dark-900 border-2 border-white/20 text-white px-4 py-3 focus:border-grass-400 outline-none"
+                    className="w-full bg-secondary border border-input text-foreground px-4 py-3 rounded focus:ring-2 focus:ring-primary outline-none"
                     step={0.1}
                     min={1}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-gray-400 mb-2">
+                  <label className="block text-sm text-muted-foreground mb-2">
                     Height (cm)
                   </label>
                   <input
                     type="number"
                     value={customHeight}
                     onChange={(e) => setCustomHeight(Number(e.target.value))}
-                    className="w-full bg-dark-900 border-2 border-white/20 text-white px-4 py-3 focus:border-grass-400 outline-none"
+                    className="w-full bg-secondary border border-input text-foreground px-4 py-3 rounded focus:ring-2 focus:ring-primary outline-none"
                     step={0.1}
                     min={1}
                   />
                 </div>
               </div>
-              <div className="mt-4 text-sm text-gray-400">
+              <div className="mt-4 text-sm text-muted-foreground">
                 Aspect Ratio: {(customWidth / customHeight).toFixed(3)}
               </div>
             </div>
           )}
 
           {/* Current Settings Info */}
-          <div className="bg-dark-800 border-3 border-white shadow-neubrutal p-6">
-            <h3 className="text-lg font-bold text-white mb-2">
+          <div className="bg-card border rounded-lg p-6">
+            <h3 className="text-lg font-bold text-foreground mb-2">
               Current Settings
             </h3>
-            <div className="space-y-2 text-sm text-gray-400">
+            <div className="space-y-2 text-sm text-muted-foreground">
               <div className="flex justify-between">
                 <span>Format:</span>
-                <span className="text-white">
+                <span className="text-foreground">
                   {isCustom ? 'Custom' : selectedPaper.name}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>Dimensions:</span>
-                <span className="text-white">
+                <span className="text-foreground">
                   {isCustom ? customWidth : selectedPaper.widthCm} ×{' '}
                   {isCustom ? customHeight : selectedPaper.heightCm} cm
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>Aspect Ratio:</span>
-                <span className="text-white">
+                <span className="text-foreground">
                   {getCurrentAspectRatio().toFixed(3)}
                 </span>
               </div>

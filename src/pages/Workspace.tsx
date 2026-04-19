@@ -9,6 +9,7 @@ import {
   ZoomOut,
 } from 'lucide-react';
 import { db, type Project } from '../lib/db';
+import { Button } from '../components/ui/button';
 
 const Workspace = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Workspace = () => {
   const [showHorizontal, setShowHorizontal] = useState(true);
   const [showDiagonal, setShowDiagonal] = useState(false);
   const [valueStudy, setValueStudy] = useState(false);
-  const [lineColor, setLineColor] = useState('#ffffff');
+  const [lineColor, setLineColor] = useState('#3B82F6');
   const [lineThickness, setLineThickness] = useState(1);
   const [showNumbers, setShowNumbers] = useState({
     top: false,
@@ -28,9 +29,9 @@ const Workspace = () => {
     right: false,
   });
   const [useGlobalColor, setUseGlobalColor] = useState(true);
-  const [verColor, setVerColor] = useState('#ffffff');
-  const [horColor, setHorColor] = useState('#ffffff');
-  const [diagColor, setDiagColor] = useState('#ffffff');
+  const [verColor, setVerColor] = useState('#3B82F6');
+  const [horColor, setHorColor] = useState('#3B82F6');
+  const [diagColor, setDiagColor] = useState('#3B82F6');
   const [isRealSize, setIsRealSize] = useState(false);
   const [ppi, setPpi] = useState(96);
   const [zoomLevel, setZoomLevel] = useState(1);
@@ -227,7 +228,7 @@ const Workspace = () => {
           y1={40 - tickHeight}
           x2={i}
           y2={40}
-          stroke="#ffff00"
+          stroke="hsl(210, 100%, 50%)"
           strokeWidth="1"
           opacity="0.7"
         />,
@@ -241,7 +242,7 @@ const Workspace = () => {
             x={i - 6}
             y={18}
             fontSize="9"
-            fill="#ffff00"
+            fill="hsl(210, 100%, 50%)"
             fontFamily="monospace"
             fontWeight="bold"
             opacity="0.8"
@@ -264,7 +265,7 @@ const Workspace = () => {
           y1={i}
           x2={40}
           y2={i}
-          stroke="#ffff00"
+          stroke="hsl(210, 100%, 50%)"
           strokeWidth="1"
           opacity="0.7"
         />,
@@ -278,7 +279,7 @@ const Workspace = () => {
             x={6}
             y={i + 4}
             fontSize="9"
-            fill="#ffff00"
+            fill="hsl(210, 100%, 50%)"
             fontFamily="monospace"
             fontWeight="bold"
             opacity="0.8"
@@ -320,7 +321,7 @@ const Workspace = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    ctx.fillStyle = '#0f172a';
+    ctx.fillStyle = '#0A0A0A';
     ctx.fillRect(0, 0, width, height);
 
     const img = new Image();
@@ -429,69 +430,74 @@ const Workspace = () => {
     <button
       onClick={onClick}
       disabled={disabled}
-      className={`w-12 h-6 text-xs font-bold border-2 ${active ? 'bg-grass-500 text-dark-950 border-grass-400' : 'bg-dark-800 text-gray-400 border-white/30'} ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
+      className={`px-3 py-1 text-xs font-bold rounded border transition-all ${active ? 'bg-primary text-primary-foreground border-primary' : 'bg-card text-muted-foreground border-border'} ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
     >
       {active ? 'ON' : 'OFF'}
     </button>
   );
 
   return (
-    <div className="h-screen flex bg-dark-950">
+    <div className="h-screen flex bg-background">
       <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-dark-900 border-b border-white px-4 py-2 flex justify-between items-center">
-          <button
+        <header className="bg-card border-b px-4 py-2 flex justify-between items-center">
+          <Button
             onClick={() => navigate('/gallery')}
             disabled={isLocked}
-            className={`text-sm flex items-center gap-1 ${isLocked ? 'text-gray-600 cursor-not-allowed' : 'text-gray-400 hover:text-white'}`}
+            variant="ghost"
+            size="sm"
+            className="gap-1"
           >
             <ArrowLeft size={16} /> Gallery
-          </button>
-          <h1 className="text-lg font-bold text-grass-400">
+          </Button>
+          <h1 className="text-lg font-bold text-primary">
             {project?.name || 'Untitled'}
           </h1>
           <div className="flex items-center gap-2">
-            <button
+            <Button
               onClick={() => setIsRealSize(!isRealSize)}
               disabled={isLocked}
-              className={`px-3 py-1 text-sm font-bold border-2 ${isRealSize ? 'bg-grass-500 text-dark-950 border-grass-400' : 'bg-dark-800 text-gray-400 border-white/30'} ${isLocked ? 'cursor-not-allowed opacity-50' : 'hover:border-grass-400'}`}
+              variant={isRealSize ? 'default' : 'outline'}
+              size="sm"
             >
               Real Size
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => setIsLocked(!isLocked)}
-              className={`px-3 py-1 text-sm font-bold border-2 ${isLocked ? 'bg-red-600 text-white border-red-400' : 'bg-dark-800 text-gray-400 border-white/30'}`}
+              variant={isLocked ? 'destructive' : 'outline'}
+              size="sm"
             >
               {isLocked ? (
-                <Lock size={14} className="inline" />
+                <Lock size={14} />
               ) : (
-                <Unlock size={14} className="inline" />
+                <Unlock size={14} />
               )}
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={handleDownload}
               disabled={isLocked}
-              className={`bg-grass-500 text-dark-950 px-3 py-1 text-sm font-bold border-2 border-white ${isLocked ? 'cursor-not-allowed opacity-50' : 'hover:shadow-neubrutal'}`}
+              size="sm"
+              className="gap-1"
             >
-              <Download size={14} className="inline" /> Download
-            </button>
+              <Download size={14} /> Download
+            </Button>
           </div>
         </header>
 
-        <div className="flex-1 overflow-hidden bg-dark-800 flex flex-col">
+        <div className="flex-1 overflow-hidden bg-card flex flex-col">
           {project ? (
             <>
               {/* Top Ruler - Fixed Height, Scrolls Horizontally */}
               {showRuler && (
-                <div className="flex flex-shrink-0 h-10 bg-dark-900 border-b border-white/20">
+                <div className="flex flex-shrink-0 h-10 bg-secondary border-b">
                   {/* Top-Left Corner */}
-                  <div className="w-10 h-10 bg-dark-950 border-r border-white/20 flex-shrink-0" />
+                  <div className="w-10 h-10 bg-background border-r flex-shrink-0" />
                   {/* Top Ruler SVG */}
                   <div className="flex-1 overflow-x-hidden">
                     <svg
                       width={width}
                       height="40"
                       style={{ display: 'block' }}
-                      className="bg-dark-900"
+                      className="bg-secondary"
                     >
                       {renderRuler().filter((r: any) =>
                         r.key?.toString().startsWith('h-ruler'),
@@ -505,8 +511,8 @@ const Workspace = () => {
               <div className="flex flex-1 overflow-hidden">
                 {/* Left Ruler - Fixed Width, Scrolls Vertically */}
                 {showRuler && (
-                  <div className="w-10 flex-shrink-0 bg-dark-900 border-r border-white/20 overflow-y-hidden">
-                    <svg width="40" height={height} className="bg-dark-900">
+                  <div className="w-10 flex-shrink-0 bg-secondary border-r overflow-y-hidden">
+                    <svg width="40" height={height} className="bg-secondary">
                       {renderRuler().filter((r: any) =>
                         r.key?.toString().startsWith('v-ruler'),
                       )}
@@ -516,7 +522,7 @@ const Workspace = () => {
 
                 {/* Image Canvas - Scrollable */}
                 <div
-                  className="flex-1 overflow-auto bg-dark-800 scrollbar-hidden"
+                  className="flex-1 overflow-auto bg-background scrollbar-hidden"
                   onWheel={handleWheel}
                 >
                   <div
@@ -550,19 +556,19 @@ const Workspace = () => {
               </div>
             </>
           ) : (
-            <div className="flex items-center justify-center w-full h-full text-gray-500">
+            <div className="flex items-center justify-center w-full h-full text-muted-foreground">
               Select a project from gallery
             </div>
           )}
         </div>
       </main>
 
-      <aside className="w-72 bg-dark-900 border-l border-white flex flex-col">
-        <div className="p-3 border-b border-white">
-          <h2 className="text-lg font-bold text-grass-400">Settings</h2>
+      <aside className="w-72 bg-card border-l flex flex-col">
+        <div className="p-3 border-b">
+          <h2 className="text-lg font-bold text-primary">Settings</h2>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-3 space-y-4 text-white">
+        <div className="flex-1 overflow-y-auto p-3 space-y-4 text-foreground">
           <div>
             <label className="block text-sm font-bold mb-2">
               Cell Size (cm)
@@ -576,7 +582,7 @@ const Workspace = () => {
               min="1"
               step="0.5"
               disabled={isLocked}
-              className={`w-full bg-dark-950 border border-white/30 px-2 py-1 ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
+              className={`w-full bg-background border border-input px-2 py-1 rounded focus:ring-2 focus:ring-primary outline-none ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
             />
             <div className="flex flex-wrap gap-1 mt-2">
               {[1, 1.5, 2, 2.5, 3, 4, 5, 10].map((v) => (
@@ -584,7 +590,7 @@ const Workspace = () => {
                   key={v}
                   onClick={() => setGridSpacing(v)}
                   disabled={isLocked}
-                  className={`px-2 py-1 text-xs ${gridSpacing === v ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
+                  className={`px-2 py-1 text-xs rounded transition-all ${gridSpacing === v ? 'bg-primary text-primary-foreground' : 'bg-secondary text-foreground'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                 >
                   {v}
                 </button>
@@ -622,73 +628,54 @@ const Workspace = () => {
           <div>
             <label className="block text-sm font-bold mb-2">Numbers</label>
             <div className="grid grid-cols-4 gap-1">
-              <button
-                onClick={() => setShowNumbers((p) => ({ ...p, top: !p.top }))}
-                disabled={isLocked}
-                className={`py-1 text-xs ${showNumbers.top ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
-              >
-                Top
-              </button>
-              <button
-                onClick={() =>
-                  setShowNumbers((p) => ({ ...p, bottom: !p.bottom }))
-                }
-                disabled={isLocked}
-                className={`py-1 text-xs ${showNumbers.bottom ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
-              >
-                Bottom
-              </button>
-              <button
-                onClick={() => setShowNumbers((p) => ({ ...p, left: !p.left }))}
-                disabled={isLocked}
-                className={`py-1 text-xs ${showNumbers.left ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
-              >
-                Left
-              </button>
-              <button
-                onClick={() =>
-                  setShowNumbers((p) => ({ ...p, right: !p.right }))
-                }
-                disabled={isLocked}
-                className={`py-1 text-xs ${showNumbers.right ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
-              >
-                Right
-              </button>
+              {(['top', 'bottom', 'left', 'right'] as const).map((side) => (
+                <Button
+                  key={side}
+                  onClick={() => setShowNumbers((p) => ({ ...p, [side]: !p[side] }))}
+                  disabled={isLocked}
+                  variant={showNumbers[side] ? 'default' : 'outline'}
+                  size="sm"
+                  className="text-xs"
+                >
+                  {side.charAt(0).toUpperCase() + side.slice(1)}
+                </Button>
+              ))}
             </div>
           </div>
 
           <div>
-            <label className="flex gap-2 text-sm">
+            <label className="flex gap-2 text-sm items-center">
               <input
                 type="checkbox"
                 checked={useGlobalColor}
                 onChange={(e) => setUseGlobalColor(e.target.checked)}
                 disabled={isLocked}
+                className="rounded"
               />{' '}
               Same color
             </label>
             {useGlobalColor ? (
-              <div className="flex items-center gap-2 mt-1">
+              <div className="flex items-center gap-2 mt-2">
                 <input
                   type="color"
                   value={lineColor}
                   onChange={(e) => setLineColor(e.target.value)}
                   disabled={isLocked}
-                  className={`w-8 h-8 ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
+                  className={`w-8 h-8 rounded ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                 />
-                <span className="text-sm">{lineColor}</span>
+                <span className="text-sm text-muted-foreground">{lineColor}</span>
               </div>
             ) : (
-              <div className="flex gap-2 mt-1">
+              <div className="flex gap-2 mt-2">
                 <div className="flex flex-col items-center">
                   <input
                     type="color"
                     value={verColor}
                     onChange={(e) => setVerColor(e.target.value)}
                     disabled={isLocked}
-                    className={`w-7 h-7 ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
+                    className={`w-7 h-7 rounded ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                   />
-                  <span className="text-xs">V</span>
+                  <span className="text-xs text-muted-foreground">V</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <input
@@ -696,9 +683,9 @@ const Workspace = () => {
                     value={horColor}
                     onChange={(e) => setHorColor(e.target.value)}
                     disabled={isLocked}
-                    className={`w-7 h-7 ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
+                    className={`w-7 h-7 rounded ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                   />
-                  <span className="text-xs">H</span>
+                  <span className="text-xs text-muted-foreground">H</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <input
@@ -706,16 +693,16 @@ const Workspace = () => {
                     value={diagColor}
                     onChange={(e) => setDiagColor(e.target.value)}
                     disabled={isLocked}
-                    className={`w-7 h-7 ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
+                    className={`w-7 h-7 rounded ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                   />
-                  <span className="text-xs">D</span>
+                  <span className="text-xs text-muted-foreground">D</span>
                 </div>
               </div>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-bold mb-1">
+            <label className="block text-sm font-bold mb-2">
               Thickness: {lineThickness}px
             </label>
             <input
@@ -729,29 +716,31 @@ const Workspace = () => {
             />
           </div>
 
-          <label className="flex gap-2 text-sm">
+          <label className="flex gap-2 text-sm items-center">
             <input
               type="checkbox"
               checked={valueStudy}
               onChange={(e) => setValueStudy(e.target.checked)}
               disabled={isLocked}
+              className="rounded"
             />{' '}
             B&W Filter
           </label>
 
-          <label className="flex gap-2 text-sm">
+          <label className="flex gap-2 text-sm items-center">
             <input
               type="checkbox"
               checked={showRuler}
               onChange={(e) => setShowRuler(e.target.checked)}
               disabled={isLocked}
+              className="rounded"
             />{' '}
             Show Ruler
           </label>
 
           {isRealSize && (
             <>
-              <div className="border-t border-dark-700 pt-4">
+              <div className="border-t pt-4">
                 <label className="block text-sm font-bold mb-2">
                   PPI: {ppi}
                 </label>
@@ -770,7 +759,7 @@ const Workspace = () => {
                       key={p}
                       onClick={() => setPpi(p)}
                       disabled={isLocked}
-                      className={`px-2 py-1 text-xs ${ppi === p ? 'bg-grass-500 text-dark-950' : 'bg-dark-800'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
+                      className={`px-2 py-1 text-xs rounded transition-all ${ppi === p ? 'bg-primary text-primary-foreground' : 'bg-secondary text-foreground'} ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                     >
                       {p}
                     </button>
@@ -783,13 +772,14 @@ const Workspace = () => {
                   Zoom: {Math.round(zoomLevel * 100)}%
                 </label>
                 <div className="flex gap-2 items-center">
-                  <button
+                  <Button
                     onClick={() => setZoomLevel(Math.max(0.1, zoomLevel - 0.1))}
                     disabled={isLocked}
-                    className={`px-2 py-1 bg-dark-800 border border-white/30 ${isLocked ? 'cursor-not-allowed opacity-50' : 'hover:border-white'}`}
+                    variant="outline"
+                    size="sm"
                   >
                     <ZoomOut size={14} />
-                  </button>
+                  </Button>
                   <input
                     type="range"
                     min="0.1"
@@ -800,22 +790,17 @@ const Workspace = () => {
                     disabled={isLocked}
                     className="flex-1"
                   />
-                  <button
+                  <Button
                     onClick={() => setZoomLevel(Math.min(3, zoomLevel + 0.1))}
                     disabled={isLocked}
-                    className={`px-2 py-1 bg-dark-800 border border-white/30 ${isLocked ? 'cursor-not-allowed opacity-50' : 'hover:border-white'}`}
+                    variant="outline"
+                    size="sm"
                   >
                     <ZoomIn size={14} />
-                  </button>
+                  </Button>
                 </div>
               </div>
             </>
-          )}
-
-          {project && (
-            <div className="text-sm text-gray-400 pt-2 border-t border-dark-700">
-              {project.paperSize}: {project.widthCm}×{project.heightCm}cm
-            </div>
           )}
         </div>
       </aside>
