@@ -1,4 +1,11 @@
-import { ArrowRight, Ruler, Grid3x3, Download, Palette, Layers } from 'lucide-react';
+import {
+  ArrowRight,
+  Ruler,
+  Grid3x3,
+  Download,
+  Palette,
+  Layers,
+} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 
@@ -11,9 +18,21 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="text-2xl font-bold text-primary">ArtScale Studio</div>
           <div className="hidden md:flex gap-8">
-            <a href="#features" className="hover:text-primary transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-primary transition-colors">How It Works</a>
-            <a href="/gallery" className="hover:text-primary transition-colors">Gallery</a>
+            <a
+              href="#features"
+              className="hover:text-primary transition-colors"
+            >
+              Features
+            </a>
+            <a
+              href="#how-it-works"
+              className="hover:text-primary transition-colors"
+            >
+              How It Works
+            </a>
+            <a href="/gallery" className="hover:text-primary transition-colors">
+              Gallery
+            </a>
           </div>
           <Button onClick={() => navigate('/crop')}>Get Started</Button>
         </div>
@@ -28,19 +47,33 @@ const Landing = () => {
               <span className="text-primary">Physical Art</span>
             </h1>
             <p className="text-xl text-muted-foreground">
-              Real-World Scaling for traditional artists. Take physical measurements directly from your screen to understand exactly how your art fits on actual paper (A1–A5).
+              Real-World Scaling for traditional artists. Take physical
+              measurements directly from your screen to understand exactly how
+              your art fits on actual paper (A1–A5).
             </p>
             <div className="flex gap-4">
-              <Button onClick={() => navigate('/crop')} size="lg" className="gap-2">
+              <Button
+                onClick={() => navigate('/crop')}
+                size="lg"
+                className="gap-2"
+              >
                 Start Creating <ArrowRight size={20} />
               </Button>
-              <Button onClick={() => navigate('/crop')} variant="outline" size="lg">
+              <Button
+                onClick={() => navigate('/crop')}
+                variant="outline"
+                size="lg"
+              >
                 Watch Demo
               </Button>
             </div>
           </div>
           <div className="bg-card border p-8 rounded-lg">
-            <img src="/src/assets/hero.png" alt="ArtScale Studio Interface" className="w-full rounded" />
+            <img
+              src="/src/assets/hero.png"
+              alt="ArtScale Studio Interface"
+              className="w-full rounded"
+            />
           </div>
         </div>
       </section>
@@ -48,10 +81,19 @@ const Landing = () => {
       {/* Trusted By */}
       <section className="py-12 border-y bg-card/50">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-muted-foreground mb-8">Trusted by artists worldwide for precise scaling</p>
+          <p className="text-muted-foreground mb-8">
+            Trusted by artists worldwide for precise scaling
+          </p>
           <div className="flex justify-center gap-12 flex-wrap">
-            {['Digital Artists', 'Traditional Painters', 'Portrait Artists', 'Sketch Artists'].map((item) => (
-              <div key={item} className="text-xl font-semibold text-primary">{item}</div>
+            {[
+              'Digital Artists',
+              'Traditional Painters',
+              'Portrait Artists',
+              'Sketch Artists',
+            ].map((item) => (
+              <div key={item} className="text-xl font-semibold text-primary">
+                {item}
+              </div>
             ))}
           </div>
         </div>
@@ -68,18 +110,20 @@ const Landing = () => {
             </div>
             <div className="space-y-6">
               <h2 className="text-4xl md:text-5xl font-bold">
-                Stop Guessing.<br />
+                Stop Guessing.
+                <br />
                 <span className="text-primary">Start Measuring.</span>
               </h2>
               <p className="text-lg text-muted-foreground">
-                ArtScale Studio puts precision tools at your fingertips, turning digital references into physical reality.
+                ArtScale Studio puts precision tools at your fingertips, turning
+                digital references into physical reality.
               </p>
               <ul className="space-y-4">
                 {[
                   'Physical measurement accuracy',
                   'A-series paper format support',
                   'Real-time grid overlays',
-                  'Export with precision'
+                  'Export with precision',
                 ].map((feature) => (
                   <li key={feature} className="flex items-center gap-3">
                     <div className="w-6 h-6 bg-primary rounded flex-shrink-0" />
@@ -98,42 +142,53 @@ const Landing = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-4">
             Built for <span className="text-primary">Precision</span>
           </h2>
-          <p className="text-center text-muted-foreground mb-16 text-lg">Every tool you need for accurate scaling</p>
-          
+          <p className="text-center text-muted-foreground mb-16 text-lg">
+            Every tool you need for accurate scaling
+          </p>
+
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
                 icon: <Ruler size={40} />,
                 title: 'Real-Size Display',
-                description: 'On-screen dimensions match actual paper size. A4 crop measures exactly 21.0 cm wide.'
+                description:
+                  'On-screen dimensions match actual paper size. A4 crop measures exactly 21.0 cm wide.',
               },
               {
                 icon: <Grid3x3 size={40} />,
                 title: 'Real-Sync Grid Engine',
-                description: 'Independent vertical, horizontal, and diagonal grid layers with cm-based spacing.'
+                description:
+                  'Independent vertical, horizontal, and diagonal grid layers with cm-based spacing.',
               },
               {
                 icon: <Layers size={40} />,
                 title: 'Physical-First Cropping',
-                description: 'Native support for A1, A3, A4, A5. Lock to exact mathematical ratios.'
+                description:
+                  'Native support for A1, A3, A4, A5. Lock to exact mathematical ratios.',
               },
               {
                 icon: <Palette size={40} />,
                 title: 'Value Study Filter',
-                description: 'One-click Black & White mode for tonal value analysis.'
+                description:
+                  'One-click Black & White mode for tonal value analysis.',
               },
               {
                 icon: <Download size={40} />,
                 title: 'Smart Export',
-                description: 'Export with grid/numbers or clean crop. High-res image blobs stored locally.'
+                description:
+                  'Export with grid/numbers or clean crop. High-res image blobs stored locally.',
               },
               {
                 icon: <Grid3x3 size={40} />,
                 title: 'Grid Numbering',
-                description: 'Toggle numbering on any edge. Individual control for each side.'
-              }
+                description:
+                  'Toggle numbering on any edge. Individual control for each side.',
+              },
             ].map((feature, idx) => (
-              <div key={idx} className="bg-card border p-8 rounded-lg hover:shadow-lg transition-shadow">
+              <div
+                key={idx}
+                className="bg-card border p-8 rounded-lg hover:shadow-lg transition-shadow"
+              >
                 <div className="w-16 h-16 bg-primary text-primary-foreground flex items-center justify-center rounded-lg mb-6">
                   {feature.icon}
                 </div>
@@ -151,24 +206,25 @@ const Landing = () => {
           <h2 className="text-4xl md:text-5xl font-bold text-center mb-16">
             How It <span className="text-primary">Works</span>
           </h2>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
                 step: '1',
                 title: 'Upload Reference',
-                description: 'Import your reference image into the workspace'
+                description: 'Import your reference image into the workspace',
               },
               {
                 step: '2',
                 title: 'Set Paper Size',
-                description: 'Choose A-series format or custom dimensions in cm'
+                description:
+                  'Choose A-series format or custom dimensions in cm',
               },
               {
                 step: '3',
                 title: 'Enable Grids',
-                description: 'Toggle grid overlays with cm-based spacing'
-              }
+                description: 'Toggle grid overlays with cm-based spacing',
+              },
             ].map((item) => (
               <div key={item.step} className="bg-card border p-8 rounded-lg">
                 <div className="w-16 h-16 bg-primary text-primary-foreground flex items-center justify-center rounded-lg text-3xl font-bold mb-6">
@@ -189,9 +245,14 @@ const Landing = () => {
             Ready to Scale Your Art?
           </h2>
           <p className="text-xl mb-8">
-            Join thousands of artists using ArtScale Studio for precise physical scaling
+            Join thousands of artists using ArtScale Studio for precise physical
+            scaling
           </p>
-          <Button onClick={() => navigate('/crop')} variant="secondary" size="lg">
+          <Button
+            onClick={() => navigate('/crop')}
+            variant="secondary"
+            size="lg"
+          >
             Launch Workspace
           </Button>
         </div>
@@ -202,30 +263,69 @@ const Landing = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-12">
             <div>
-              <div className="text-2xl font-bold text-primary mb-4">ArtScale Studio</div>
-              <p className="text-muted-foreground">Bridging digital and physical art through precision scaling.</p>
+              <div className="text-2xl font-bold text-primary mb-4">
+                ArtScale Studio
+              </div>
+              <p className="text-muted-foreground">
+                Bridging digital and physical art through precision scaling.
+              </p>
             </div>
             <div>
               <h4 className="font-bold mb-4">Product</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Workspace</a></li>
-                <li><a href="/gallery" className="hover:text-primary transition-colors">Gallery</a></li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Features
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Workspace
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/gallery"
+                    className="hover:text-primary transition-colors"
+                  >
+                    Gallery
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold mb-4">Resources</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors">Documentation</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Tutorial</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">FAQ</a></li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Documentation
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Tutorial
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    FAQ
+                  </a>
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="font-bold mb-4">Legal</h4>
               <ul className="space-y-2 text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors">Privacy</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Terms</a></li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Privacy
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-primary transition-colors">
+                    Terms
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

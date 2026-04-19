@@ -466,11 +466,7 @@ const Workspace = () => {
               variant={isLocked ? 'destructive' : 'outline'}
               size="sm"
             >
-              {isLocked ? (
-                <Lock size={14} />
-              ) : (
-                <Unlock size={14} />
-              )}
+              {isLocked ? <Lock size={14} /> : <Unlock size={14} />}
             </Button>
             <Button
               onClick={handleDownload}
@@ -631,7 +627,9 @@ const Workspace = () => {
               {(['top', 'bottom', 'left', 'right'] as const).map((side) => (
                 <Button
                   key={side}
-                  onClick={() => setShowNumbers((p) => ({ ...p, [side]: !p[side] }))}
+                  onClick={() =>
+                    setShowNumbers((p) => ({ ...p, [side]: !p[side] }))
+                  }
                   disabled={isLocked}
                   variant={showNumbers[side] ? 'default' : 'outline'}
                   size="sm"
@@ -663,7 +661,9 @@ const Workspace = () => {
                   disabled={isLocked}
                   className={`w-8 h-8 rounded ${isLocked ? 'cursor-not-allowed opacity-50' : ''}`}
                 />
-                <span className="text-sm text-muted-foreground">{lineColor}</span>
+                <span className="text-sm text-muted-foreground">
+                  {lineColor}
+                </span>
               </div>
             ) : (
               <div className="flex gap-2 mt-2">

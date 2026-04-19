@@ -1,13 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cropper from 'react-easy-crop';
-import {
-  Upload,
-  Save,
-  ArrowLeft,
-  ZoomIn,
-  ZoomOut,
-} from 'lucide-react';
+import { Upload, Save, ArrowLeft, ZoomIn, ZoomOut } from 'lucide-react';
 import { db, type Project } from '../lib/db';
 import { Button } from '../components/ui/button';
 
@@ -126,7 +120,9 @@ const CropPage = () => {
             <div className="bg-card border p-12 hover:shadow-lg transition-all rounded-lg">
               <Upload size={64} className="mx-auto mb-4 text-primary" />
               <p className="text-foreground text-lg">Click to upload image</p>
-              <p className="text-muted-foreground mt-2">Supports JPG, PNG, WebP</p>
+              <p className="text-muted-foreground mt-2">
+                Supports JPG, PNG, WebP
+              </p>
             </div>
           </label>
         </div>
@@ -148,11 +144,7 @@ const CropPage = () => {
             <ArrowLeft size={20} /> Back
           </Button>
           <h1 className="text-2xl font-bold text-primary">Crop Image</h1>
-          <Button
-            onClick={handleSave}
-            size="sm"
-            className="gap-2"
-          >
+          <Button onClick={handleSave} size="sm" className="gap-2">
             <Save size={20} /> Save & Continue
           </Button>
         </div>
@@ -218,7 +210,9 @@ const CropPage = () => {
 
           {/* Paper Size Selection */}
           <div className="bg-card border rounded-lg p-6">
-            <h3 className="text-lg font-bold text-foreground mb-4">Paper Size</h3>
+            <h3 className="text-lg font-bold text-foreground mb-4">
+              Paper Size
+            </h3>
             <div className="space-y-2">
               {PAPER_SIZES.map((paper) => (
                 <button
@@ -234,7 +228,9 @@ const CropPage = () => {
                   }`}
                 >
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-foreground">{paper.name}</span>
+                    <span className="font-bold text-foreground">
+                      {paper.name}
+                    </span>
                     <span className="text-sm text-muted-foreground">
                       {paper.widthCm} × {paper.heightCm} cm
                     </span>

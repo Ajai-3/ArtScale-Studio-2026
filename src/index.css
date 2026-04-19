@@ -9,24 +9,24 @@
   :root {
     /* Grass.io Dark Theme */
     --background: #111111;
-    --foreground: #F3F3F3;
+    --foreground: #f3f3f3;
     --card: #1a1a1a;
-    --card-foreground: #F3F3F3;
+    --card-foreground: #f3f3f3;
     --popover: #222222;
-    --popover-foreground: #F3F3F3;
-    --primary: #ABF600;
+    --popover-foreground: #f3f3f3;
+    --primary: #abf600;
     --primary-foreground: #111111;
-    --secondary: #F2FED1;
+    --secondary: #f2fed1;
     --secondary-foreground: #111111;
     --muted: #404040;
     --muted-foreground: #a0a0a0;
-    --accent: #ABF600;
+    --accent: #abf600;
     --accent-foreground: #111111;
     --destructive: #ff6b6b;
-    --destructive-foreground: #FFFFFF;
+    --destructive-foreground: #ffffff;
     --border: rgba(171, 246, 0, 0.15);
     --input: #222222;
-    --ring: #ABF600;
+    --ring: #abf600;
     --radius: 0.5rem;
   }
 
@@ -67,11 +67,11 @@
 
   ::selection {
     background: rgba(171, 246, 0, 0.25);
-    color: #F3F3F3;
+    color: #f3f3f3;
   }
 
   :focus-visible {
-    outline: 2px solid #ABF600;
+    outline: 2px solid #abf600;
     outline-offset: 2px;
   }
 }
