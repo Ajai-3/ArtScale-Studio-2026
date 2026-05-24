@@ -1,112 +1,131 @@
-# ArtScale Studio 2026
+# ArtScale Studio
 
-A high-precision utility for traditional artists that bridges the gap between digital pixels and physical paper dimensions.
+A high-precision utility for traditional artists that bridges the gap between digital references and physical paper through Real-World Scaling.
 
 ---
 
-## Overview
+## What It Does
 
-ArtScale Studio 2026 helps artists achieve perfect precision when scaling reference images to physical paper sizes (A1 through A5 formats). Upload an image, set your paper dimensions, and get pixel-perfect framing with an advanced grid system that works with real-world centimeter measurements.
+ArtScale Studio lets you take a digital reference image, crop it to an exact A-series paper ratio, overlay a centimeter-accurate grid, and export it — so every measurement on your screen maps directly to your physical paper.
 
-**Perfect for:** Illustrators, portrait artists, and traditional art practitioners who want digital precision tools without sacrificing artistic freedom.
+The core idea is called **Real-Sync**: 1 cm on screen equals 1 cm on your paper. No guessing, no rescaling by eye.
+
+---
+
+## Features
+
+- Physical-first cropping locked to A1, A3, A4, A5 ratios or custom dimensions
+- Real-Sync Grid Engine with independent vertical, horizontal, and diagonal layers
+- Grid spacing set in centimeters, not pixel counts
+- Grid numbering toggleable per edge (top, bottom, left, right)
+- Real Size display mode — calibrated to your monitor's PPI
+- Value Study filter — one-click Black & White mode for tonal analysis
+- Custom grid colors per layer or a single global color
+- Ruler overlay with 1 cm tick accuracy
+- Export as high-res PNG with or without grid overlay
+- Local-first storage via IndexedDB — no accounts, no cloud, no uploads
+- Bento-style Gallery for managing saved projects
 
 ---
 
 ## Tech Stack
 
-![React](https://img.shields.io/badge/React-19.2.4-61DAFB?style=for-the-badge&logo=react&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-6.0.2-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-8.0.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
-
-![React Router](https://img.shields.io/badge/React%20Router-7.14.1-F15025?style=for-the-badge&logo=react-router&logoColor=white)
-![Dexie](https://img.shields.io/badge/Dexie.js-4.4.2-4AC3FF?style=for-the-badge&logo=indexeddb&logoColor=white)
-![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-4.2.0-000000?style=for-the-badge)
-![ESLint](https://img.shields.io/badge/ESLint-9.39.4-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
-
----
-
-## Key Features
-
-- **Physical-First Cropping** - Support for A-series paper (A1, A3, A4, A5) with custom dimension support in centimeters
-- **Real-Sync Grid Engine** - Independent grid layers (vertical, horizontal, diagonal) with real-world centimeter spacing
-- **Grid Customization** - Adjust spacing, colors, and edge numbering (left, right, top, bottom)
-- **Real Size Display Mode** - View images at true-to-life physical scale on your monitor
-- **Gallery & Projects** - Save and organize multiple reference setups locally
-- **Value Study Filter** - One-click black and white conversion for tonal analysis
-- **Export & Download** - Export processed images with or without grid overlays
-- **Local Storage** - All projects saved locally using IndexedDB (no cloud, no accounts)
+| Technology | Version | Purpose |
+|---|---|---|
+| ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white&labelColor=20232a) | 19.2.4 | UI framework |
+| ![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white&labelColor=1e293b) | 6.0.2 | Type safety |
+| ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white&labelColor=1e1e2e) | 8.0.4 | Build tool & dev server |
+| ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-06B6D4?logo=tailwindcss&logoColor=white&labelColor=0f172a) | 3.4.3 | Utility-first styling |
+| ![React Router](https://img.shields.io/badge/React_Router-7-CA4245?logo=reactrouter&logoColor=white&labelColor=1e1e2e) | 7.14.1 | Client-side routing |
+| ![Dexie.js](https://img.shields.io/badge/Dexie.js-4-FF6B35?logoColor=white&labelColor=1e1e2e) | 4.4.2 | IndexedDB wrapper for local storage |
+| ![react-easy-crop](https://img.shields.io/badge/react--easy--crop-5-abf600?logoColor=black&labelColor=1e1e2e) | 5.5.7 | Image cropping with aspect ratio lock |
+| ![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-4-f3f3f3?logoColor=black&labelColor=1e1e2e) | 4.2.0 | Base UI component system |
+| ![Lucide React](https://img.shields.io/badge/Lucide_React-1-f97316?logo=lucide&logoColor=white&labelColor=1e1e2e) | 1.8.0 | Icon library |
 
 ---
 
 ## Project Structure
 
 ```
-ArtScale-Studio-2026/
-├── public/               # Static assets
-├── src/
-│   ├── pages/           # Page components (Landing, Gallery, Workspace, CropPage)
-│   ├── components/      # Reusable UI components
-│   ├── lib/
-│   │   ├── db.ts       # Database configuration
-│   │   └── utils.ts    # Utility functions
-│   ├── assets/         # Images and resources
-│   ├── App.tsx         # Root component
-│   └── main.tsx        # Application entry point
-├── tailwind.config.js  # Tailwind configuration
-├── vite.config.ts      # Vite configuration
-└── package.json        # Dependencies
+src/
+  pages/
+    Landing.tsx       — Marketing landing page
+    CropPage.tsx      — Image upload and crop tool
+    Workspace.tsx     — Studio with grid engine and ruler
+    Gallery.tsx       — Saved projects browser
+    NotFound.tsx      — 404 page
+  components/
+    ui/
+      button.tsx      — shadcn/ui button component
+  lib/
+    db.ts             — Dexie.js IndexedDB schema and instance
+    utils.ts          — Utility helpers
+  index.css           — Global styles and CSS variables
+  main.tsx            — App entry point
+  App.tsx             — Route definitions
+public/
+  favicon.ico
+  logo.png
 ```
 
 ---
 
-## Installation
+## Getting Started
 
-### Prerequisites
-
-- Node.js 16+
-- npm or yarn
-
-### Setup
+**Install dependencies**
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd ArtScale-Studio-2026
-
-# Install dependencies
 npm install
+```
 
-# Start development server
+**Start the development server**
+
+```bash
 npm run dev
+```
 
-# Build for production
+**Build for production**
+
+```bash
 npm run build
 ```
 
----
+**Preview the production build**
 
-## Quick Start
-
-1. **Upload Image** - Open Workspace and upload your reference image
-2. **Set Paper Size** - Choose A-series format (A1-A5) or enter custom dimensions
-3. **Crop & Frame** - Use the crop tool to compose your shot perfectly
-4. **Add Grid** - Enable grid layers and set spacing in centimeters
-5. **Customize** - Adjust colors, numbering, and grid styles
-6. **Export** - Download your reference sheet for studio use
-7. **Save** - All projects auto-save to your local gallery
+```bash
+npm run preview
+```
 
 ---
 
-## Browser Support
+## How It Works
 
-- Chrome/Chromium 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
+1. Go to the studio and upload a reference image
+2. Select your paper size (A1 through A5) or enter custom dimensions in cm
+3. Crop and frame your subject — the crop locks to the exact paper ratio
+4. Open the workspace to overlay a cm-based grid
+5. Toggle vertical, horizontal, and diagonal layers independently
+6. Enable Real Size mode to match on-screen dimensions to physical paper
+7. Export as PNG with or without the grid
 
 ---
 
-## License
+## Data & Privacy
 
-ArtScale Studio 2026 - All rights reserved.
+All project data — images, crop coordinates, grid settings — is stored locally in your browser via IndexedDB. Nothing is uploaded to any server. Each browser and device has its own isolated data store.
+
+---
+
+## Paper Format Reference
+
+| Format | Dimensions |
+|--------|------------|
+| A1 | 59.4 x 84.1 cm |
+| A2 | 42.0 x 59.4 cm |
+| A3 | 29.7 x 42.0 cm |
+| A4 | 21.0 x 29.7 cm |
+| A5 | 14.8 x 21.0 cm |
+
+---
+
+© 2026 ArtScale Studio

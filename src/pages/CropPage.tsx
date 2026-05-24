@@ -205,10 +205,6 @@ const CropPage = () => {
               onCropComplete={onCropComplete}
               cropShape="rect"
               showGrid={true}
-              gridProps={{
-                strokeColor: 'rgba(171, 246, 0, 0.15)',
-                strokeWidth: 1,
-              }}
               style={{
                 containerStyle: {
                   background: 'rgb(17, 17, 17)',
