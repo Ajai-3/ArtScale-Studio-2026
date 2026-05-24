@@ -1,30 +1,23 @@
 import { useNavigate } from 'react-router-dom';
 import { AlertTriangle } from 'lucide-react';
+import { Button } from '../components/ui/button';
 
 const NotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-dark-950 flex items-center justify-center">
+    <div className="min-h-screen bg-background flex items-center justify-center">
       <div className="text-center">
-        <div className="w-24 h-24 bg-dark-800 border-3 border-white shadow-neubrutal-xl flex items-center justify-center mx-auto mb-8">
-          <AlertTriangle size={48} className="text-grass-400" />
+        <div className="w-24 h-24 bg-card border rounded-lg flex items-center justify-center mx-auto mb-8">
+          <AlertTriangle size={48} className="text-primary" />
         </div>
-        <h1 className="text-6xl font-bold text-white mb-4">404</h1>
-        <p className="text-xl text-gray-400 mb-8">Page not found</p>
+        <h1 className="text-6xl font-bold text-foreground mb-4">404</h1>
+        <p className="text-xl text-muted-foreground mb-8">Page not found</p>
         <div className="flex gap-4 justify-center">
-          <button
-            onClick={() => navigate(-1)}
-            className="bg-dark-800 text-white px-6 py-3 font-bold border-3 border-white shadow-neubrutal hover:shadow-neubrutal-md hover:translate-x-1 hover:translate-y-1 transition-all"
-          >
+          <Button onClick={() => navigate(-1)} variant="outline">
             Go Back
-          </button>
-          <button
-            onClick={() => navigate('/')}
-            className="bg-grass-500 text-dark-950 px-6 py-3 font-bold border-3 border-white shadow-neubrutal hover:shadow-neubrutal-md hover:translate-x-1 hover:translate-y-1 transition-all"
-          >
-            Home
-          </button>
+          </Button>
+          <Button onClick={() => navigate('/')}>Home</Button>
         </div>
       </div>
     </div>
