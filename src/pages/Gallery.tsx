@@ -70,13 +70,13 @@ const Gallery = () => {
                 <p className="text-sm text-[#a0a0a0] mt-1">{projects.length} project{projects.length !== 1 ? 's' : ''} saved locally</p>
               </div>
             </div>
-            <div className="grid md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {projects.map((project) => (
                 <div
                   key={project.id}
-                  className="group bg-[#1a1a1a] border border-[#abf600]/10 rounded-xl overflow-hidden hover:border-[#abf600]/30 transition-all duration-300"
+                  className="group bg-[#1a1a1a] border border-[#abf600]/10 rounded-xl overflow-hidden hover:border-[#abf600]/30 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
                 >
-                  <div className="aspect-square bg-[#111111] relative overflow-hidden">
+                  <div className="aspect-[4/3] bg-[#111111] relative overflow-hidden">
                     {typeof project.imageData === 'string' ? (
                       <img
                         src={project.imageData}
@@ -105,18 +105,18 @@ const Gallery = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="p-4">
-                    <h3 className="font-bold text-[#f3f3f3] truncate mb-1">{project.name}</h3>
+                  <div className="p-3.5">
+                    <h3 className="font-bold text-sm text-[#f3f3f3] truncate mb-1" title={project.name}>{project.name}</h3>
                     <div className="flex items-center justify-between">
-                      <span className="text-xs text-[#abf600] font-mono bg-[#abf600]/10 border border-[#abf600]/15 rounded px-2 py-0.5">
+                      <span className="text-[10px] text-[#abf600] font-mono bg-[#abf600]/10 border border-[#abf600]/15 rounded px-1.5 py-0.25">
                         {project.paperSize}
                       </span>
-                      <span className="text-xs text-[#a0a0a0]">
+                      <span className="text-[11px] text-[#a0a0a0]">
                         {project.widthCm} × {project.heightCm} cm
                       </span>
                     </div>
-                    <p className="text-xs text-[#a0a0a0]/50 mt-2">
-                      {new Date(project.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                    <p className="text-[10px] text-[#a0a0a0]/40 mt-2 font-mono">
+                      {new Date(project.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })} · {new Date(project.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
                 </div>
